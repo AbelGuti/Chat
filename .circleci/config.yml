@@ -36,8 +36,8 @@ jobs:
           command: |
             sha=$CIRCLE_SHA1
             TAG=latest
-            echo "ecs-deploy --region $REGION --cluster $CLUSTER --service-name $SERVICE --image $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/chat-demo:$TAG --timeout 1800"
-            ecs-deploy --region $REGION --cluster $CLUSTER --service-name $SERVICE --image $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/chat-demo:$TAG --timeout 1800
+            echo "ecs-deploy --region $REGION --cluster $CLUSTER --service-name $SERVICE --image $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/trambochat:$TAG --timeout 1800"
+            ecs-deploy --region $REGION --cluster $CLUSTER --service-name $SERVICE --image $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/trambochat:$TAG --timeout 1800
 workflows:
   version: 2
   buil&push:
