@@ -61,7 +61,7 @@ form {
 ================================*/
 
 #joiners {
-  background-color:#f54100;
+  background-color:#0039f5;
   color: white;
   opacity:0.9;
   z-index: 3;
@@ -72,7 +72,7 @@ form {
 }
 
 #header {
-  background-color:#8f2600;
+  background-color:#00228f;
   color: white;
   opacity:0.9;
   z-index: 3;
