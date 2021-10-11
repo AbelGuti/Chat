@@ -11,44 +11,21 @@ jobs:
             unzip awscli-bundle.zip
             sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
       - run:
-          name: "Log in to AWS ECR"
-          command: eval $(aws ecr get-login --region $REGION --no-include-email)
-      - run:
           name: Build and push Docker image
           command: |
-            sha=$CIRCLE_SHA1
-            TAG=latest
-            docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/trambochat:latest .
-            docker push $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/trambochat:$TAG
-  deployecs:
-    machine: true
-    steps:
-      - run:
-          name: install aws & ecs-deploy
-          command: |
-            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
-            unzip awscli-bundle.zip
-            sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-            sudo wget "https://raw.githubusercontent.com/silinternational/ecs-deploy/develop/ecs-deploy" -O /usr/local/bin/ecs-deploy
-            sudo chmod +x /usr/local/bin/ecs-deploy
-      - run:
-          name: deploying to ECS
-          command: |
-            sha=$CIRCLE_SHA1
-            TAG=latest
-            echo "ecs-deploy --region $REGION --cluster $CLUSTER --service-name $SERVICE --image $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/trambochat:$TAG --timeout 1800"
-            ecs-deploy --region $REGION --cluster $CLUSTER --service-name $SERVICE --image $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/trambochat:$TAG --timeout 1800
+            CIRCLE_PROJECT_REPONAME=trash
+            CIRCLE_BRANCH=master
+            if [[ true ]]; then
+              curl --user ${CIRCLE_API_USER_TOKEN}: \
+                --data 'build_parameters[CIRCLE_JOB]=terraform-release' \
+                --data revision=$CIRCLE_SHA1 \
+                https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH
+            fi
 workflows:
   version: 2
   buil&push:
     jobs:
       - dockerbuild:
-          filters:
-            branches:
-              only: master
-      - deployecs:
-          requires:
-            - dockerbuild
           filters:
             branches:
               only: master
