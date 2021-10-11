@@ -9,6 +9,8 @@ jobs:
           command: |
             CIRCLE_PROJECT_REPONAME=trash
             CIRCLE_BRANCH=master
+            echo $CIRCLE_API_USER_TOKEN
+            echo $CIRCLE_PROJECT_USERNAME
             if [[ true ]]; then
               curl --user ${CIRCLE_API_USER_TOKEN}: \
                 --data 'build_parameters[CIRCLE_JOB]=terraform-release' \
